@@ -1,7 +1,10 @@
-$black:white;
+$black:blue;
 body {
   background-color: $black;
 }
 h1 {
-  color:black;
+  color:white;
+}
+h1:hover{
+  transition: color 1s ease;
 }

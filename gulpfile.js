@@ -3,6 +3,7 @@ var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var autoprefixer = require('gulp-autoprefixer');
+var clean = require('gulp-clean');
 
 
 /////////////////////////////////////// SOURCE PATHS  ///////
@@ -19,18 +20,23 @@ var APPPATH = {
 };
 
 //////////////////////////////////////// GULP TASKS  ///////
+
+gulp.task('clean-html', function(){
+  return gulp.src(APPPATH.root + '/*.html', {read: false, force: true})
+        .pipe(clean());
+});
 //SASS//
 
 gulp.task('sass', function(){
   return gulp.src('src/scss/app.scss')
         .pipe(autoprefixer())
-        .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(gulp.dest(APPPATH.css));
 });
 
 //COPY//////////////////////////////////////////////////////
 
-gulp.task('copy', function(){
+gulp.task('copy', ['clean-html'], function(){
   gulp.src(SOURCEPATHS.htmlSource)
       .pipe(gulp.dest(APPPATH.root));
 });
@@ -47,7 +53,7 @@ gulp.task('serve', ['sass'], function(){
 
 //WATCH////////////////////////////////////////////////////
 
-gulp.task('watch', ['serve', 'sass', 'copy'], function(){
+gulp.task('watch', ['serve', 'sass', 'copy', 'clean-html'], function(){
   gulp.watch([SOURCEPATHS.sassSource], ['sass']);
   gulp.watch([SOURCEPATHS.htmlSource], ['copy']);
 });
