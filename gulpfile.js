@@ -4,6 +4,7 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var autoprefixer = require('gulp-autoprefixer');
 var clean = require('gulp-clean');
+var concat = require('gulp-concat');
 
 
 /////////////////////////////////////// SOURCE PATHS  ///////
@@ -33,7 +34,7 @@ gulp.task('clean-scripts', function(){
   return gulp.src(APPPATH.js + '/*.js', {read: false, force: true})
         .pipe(clean());
 });
-//SASS//
+//SASS////////////////////////////////////////////////////
 
 gulp.task('sass', function(){
   return gulp.src('src/scss/app.scss')
@@ -44,6 +45,7 @@ gulp.task('sass', function(){
 
 gulp.task('scripts', ['clean-scripts'], function(){
   gulp.src(SOURCEPATHS.jsSource)
+      .pipe(concat('main.js'))
       .pipe(gulp.dest(APPPATH.js));
 });
 //COPY//////////////////////////////////////////////////////
